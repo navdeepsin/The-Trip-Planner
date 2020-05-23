@@ -44,8 +44,14 @@ function displayLocations(query) {
 }
 
 originsEle.onclick = e => {
+  const listOfLi = document.querySelectorAll('.origins li');
+  listOfLi.forEach(li => {
+    if(li.classList.value === "selected") {
+      li.classList.remove("selected");
+    }
+  })
   const clicked = e.target.closest('li');
-    clicked.classList.add("selected");
+  clicked.classList.add("selected");
 } 
 
  
