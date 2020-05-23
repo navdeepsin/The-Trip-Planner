@@ -14,10 +14,10 @@ formClassEle.onsubmit = e => {
   e.preventDefault();
 }
 
-// function displayLocations(query) {
-//   fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${accessToken}&limit=10&bbox=-97.325875, 49.766204, -96.953987, 49.99275`)
-//     .then(resp => resp.json())
-//     .then (data => {
-//       console.log(data);
-//     })
-// }
+function displayLocations(query) {
+  fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${accessToken}&limit=10&bbox=-97.325875, 49.766204, -96.953987, 49.99275`)
+    .then(resp => resp.json())
+    .then (data => {
+      console.log(data);
+    })
+}
