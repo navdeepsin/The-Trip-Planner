@@ -89,16 +89,16 @@ function displayDestinationLocations(query) {
     })
 }
 
-// destinationsEle.onclick = e => {
-//   const listOfLi = document.querySelectorAll('.destinations li');
-//   listOfLi.forEach(li => {
-//     if(li.classList.value === "selected") {
-//       li.classList.remove("selected");
-//     }
-//   })
-//   const clicked = e.target.closest('li');
-//   clicked.classList.add("selected");
-// } 
+destinationsEle.onclick = e => {
+  const listOfLi = document.querySelectorAll('.destinations li');
+  listOfLi.forEach(li => {
+    if(li.classList.value === "selected") {
+      li.classList.remove("selected");
+    }
+  })
+  const clicked = e.target.closest('li');
+  clicked.classList.add("selected");
+} 
  
 
 
