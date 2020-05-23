@@ -2,6 +2,8 @@ const formClassEle = document.querySelector('.origin-form');
 const originsEle = document.querySelector('.origins');
 
 
+
+
 const accessToken = 'pk.eyJ1IjoibmF2ZGVlcHNpbjMxIiwiYSI6ImNrYTZ1NDJvbTBjcjcyeW11enZzZDV2aHEifQ.isANPuVW0B-Xg7MYjfZPnw';
 
 formClassEle.onsubmit = e => {
@@ -36,7 +38,18 @@ function displayLocations(query) {
               <div>Winnipeg</div>
             </li>`
         }
+        originsEle.innerHTML = locationsHTML;
       });
-      originsEle.innerHTML = locationsHTML;
     })
 }
+
+originsEle.onclick = e => {
+  const clicked = e.target.closest('li');
+    clicked.classList.add("selected");
+} 
+
+ 
+
+
+
+
