@@ -2,7 +2,9 @@ const originFormEle = document.querySelector('.origin-form');
 const originsEle = document.querySelector('.origins');
 const destinationFormEle = document.querySelector('.destination-form');
 const destinationsEle = document.querySelector('.destinations');
+const buttonEle = document.querySelector('button');
 const accessToken = 'pk.eyJ1IjoibmF2ZGVlcHNpbjMxIiwiYSI6ImNrYTZ1NDJvbTBjcjcyeW11enZzZDV2aHEifQ.isANPuVW0B-Xg7MYjfZPnw';
+const transitApiKey = 'ifacCxMUu4mJPof9BlBn';
 
 originFormEle.onsubmit = e => {
   const input = e.target.querySelector('input');
@@ -99,7 +101,25 @@ destinationsEle.onclick = e => {
   const clicked = e.target.closest('li');
   clicked.classList.add("selected");
 } 
- 
+
+
+buttonEle.onclick = e => {
+  const selectedOrigins = originsEle.querySelectorAll('li.selected');
+  const selectedDestinations = destinationsEle.querySelectorAll('li.selected');
+  const originsLat = selectedOrigins[0].dataset.lat;
+  const originsLong = selectedOrigins[0].dataset.long;
+  const destinationsLat = selectedDestinations[0].dataset.lat;
+  const destinationsLong = selectedDestinations[0].dataset.long;
+
+  fetch(`https://api.winnipegtransit.com/v3/trip-planner.json?api-key=${transitApiKey}&origin=geo/${originsLat},${originsLong}&destination=geo/${destinationsLat},${destinationsLong}`)
+    .then(resp => resp.json())
+    .then(data => {
+      console.log(data);
+    })
+}
+
+
+
 
 
 
