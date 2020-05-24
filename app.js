@@ -3,8 +3,15 @@ const originsEle = document.querySelector('.origins');
 const destinationFormEle = document.querySelector('.destination-form');
 const destinationsEle = document.querySelector('.destinations');
 const buttonEle = document.querySelector('button');
+const tripPlanEle = document.querySelector('.my-trip');
 const accessToken = 'pk.eyJ1IjoibmF2ZGVlcHNpbjMxIiwiYSI6ImNrYTZ1NDJvbTBjcjcyeW11enZzZDV2aHEifQ.isANPuVW0B-Xg7MYjfZPnw';
 const transitApiKey = 'ifacCxMUu4mJPof9BlBn';
+
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1)
+}
+
+"my new sentence".capitalize()
 
 originFormEle.onsubmit = e => {
   const input = e.target.querySelector('input');
@@ -103,7 +110,7 @@ destinationsEle.onclick = e => {
 } 
 
 
-buttonEle.onclick = e => {
+buttonEle.onclick = () => {
   const selectedOrigins = originsEle.querySelectorAll('li.selected');
   const selectedDestinations = destinationsEle.querySelectorAll('li.selected');
   const originsLat = selectedOrigins[0].dataset.lat;
@@ -114,13 +121,45 @@ buttonEle.onclick = e => {
   fetch(`https://api.winnipegtransit.com/v3/trip-planner.json?api-key=${transitApiKey}&origin=geo/${originsLat},${originsLong}&destination=geo/${destinationsLat},${destinationsLong}`)
     .then(resp => resp.json())
     .then(data => {
-      console.log(data);
-    })
+      tripPlanEle.innerHTML = "";
+      tripDescriptionHTML = "";
+      
+      data.plans[0].segments.forEach(trip => {
+        console.log(trip);
+        if (trip.type === "walk" && trip.to.stop !== undefined) {
+            tripDescriptionHTML += `
+              <li>
+                <i class="fas fa-walking" aria-hidden="true"></i>Walk for ${trip.times.durations.walking} minutes
+                to stop #${trip.to.stop.key} - ${trip.to.stop.name}
+              </li>`
+        } else if (trip.type === "ride") {
+            tripDescriptionHTML += `
+              <li>
+                <i class="fas fa-bus" aria-hidden="true"></i>Ride the ${trip.route.name}
+                for ${trip.times.durations.riding} minutes.
+              </li>`
+        } else if (trip.type === "ride" && trip.route.number === "BLUE") {
+          tripDescriptionHTML += `
+            <li>
+              <i class="fas fa-bus" aria-hidden="true"></i>Ride the ${trip.route.number}
+              for ${trip.times.durations.riding} minutes.
+            </li>`
+        } else if (trip.type === "transfer") {
+            tripDescriptionHTML += `
+              <li>
+                <i class="fas fa-ticket-alt" aria-hidden="true"></i>Transfer from stop
+                #${trip.from.stop.key} - ${trip.from.stop.name} #${trip.to.stop.key} - ${trip.to.stop.name}
+              </li>`
+        } else if (trip.type === "walk") {
+            if(trip.to.stop === undefined) {
+              tripDescriptionHTML += `
+              <li>
+                <i class="fas fa-walking" aria-hidden="true"></i>Walk for ${trip.times.durations.walking} minutes to
+                your destination.
+              </li>`
+            }
+        }
+        tripPlanEle.innerHTML = tripDescriptionHTML;
+    });
+  })
 }
-
-
-
-
-
-
-
